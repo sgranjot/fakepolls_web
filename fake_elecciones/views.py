@@ -1,17 +1,18 @@
 from django.shortcuts import render
+from django.views import generic
 import base64
 from io import BytesIO
 import matplotlib.pyplot as plt
 import pandas as pd
 
 
-class IndexView(generic.ListView):
+class IndexView(generic.TemplateView):
     template_name ='fake_elecciones/resultados.html'
-    context_object_name = 'graph'
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-        df = pd.read_csv('elecciones_generales_2023.csv')
+        df = pd.read_csv('fake_elecciones/elecciones_generales_2023.csv')
 
         partidos_principales = ['PSOE', 'PP', 'VOX', 'SUMAR']
 
@@ -40,5 +41,7 @@ class IndexView(generic.ListView):
 
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-        print(graphic)
-        return graphic
+
+        context['graph'] = graphic
+
+        return context
