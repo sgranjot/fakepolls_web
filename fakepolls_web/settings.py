@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'fakeit.apps.FakeitConfig',
+    'fake_elecciones.apps.FakeEleccionesConfig'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
