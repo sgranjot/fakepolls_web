@@ -3,24 +3,22 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-def genera_grafica ():
-    df = pd.read_csv('elecciones_generales_2023.csv')
+def generar_grafica(votaciones_list):
+    df = pd.DataFrame(list(votaciones_list.values('anio', 'partido', 'votos')))
 
-    partidos_principales = ['PSOE', 'PP', 'VOX', 'SUMAR']
+    votos_por_partido = df.groupby(['partido'])['votos'].sum()
+
+    etiquetas = ['{}: {} votos'.format(partido, votos) for partido, votos in votos_por_partido.items()]
 
     colores_partidos = {'PSOE': 'red',
                         'PP': 'cyan',
                         'VOX': 'green',
                         'SUMAR': 'violet'}
 
-    df_filtrado = df[df['PARTIDO'].isin(partidos_principales)]
-
-    votos_por_partido = df_filtrado.groupby('PARTIDO')['NUM_VOTOS'].sum()
-
     plt.figure(figsize=(8, 6))
-    plt.pie(votos_por_partido, labels=votos_por_partido.index, autopct='%1.1f%%', startangle=140,
-            colors=[colores_partidos[partido] for partido in votos_por_partido.index])
-    plt.title('Distribución de Votos por Partido en las Elecciones de 2023')
+    plt.pie(votos_por_partido, labels=etiquetas, autopct='%1.1f%%', startangle=140,
+            colors = [colores_partidos[partido] for partido in votos_por_partido.index])
+    plt.title('Distribución de Votos por Partido en las Elecciones de {}'.format(df.iloc[0]['anio']))
     plt.axis('equal')
 
     plt.tight_layout()
