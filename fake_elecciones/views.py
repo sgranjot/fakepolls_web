@@ -33,19 +33,11 @@ def upload_csv(request):
             df = pd.read_csv(csv_file.file.path)
             #votos_por_partido = df.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()          ESTO ES PARA HACERLO CON TODOS LOS PARTIDOS, MEJOR CON LOS CUATRO PRINCIPALES
 
-
-
-
             partidos = ['PSOE', 'PP', 'VOX', 'SUMAR']
-
-
 
             df_filtrado = df[df['PARTIDO'].isin(partidos)]
 
             votos_por_partido = df_filtrado.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()
-
-
-
 
             for index, fila in votos_por_partido.iterrows():
                 obj = Votacion.objects.create(
