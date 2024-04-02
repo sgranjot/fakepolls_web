@@ -4,5 +4,5 @@ from . import views
 
 app_name = "fake_elecciones"
 urlpatterns = [
-    path("", views.IndexView.as_view(), name="index"),
+    path("", views.IndexViewCSV.as_view(), name="index"),
 ]
