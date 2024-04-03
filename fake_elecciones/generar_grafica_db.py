@@ -13,7 +13,8 @@ def generar_grafica(votaciones_list):
     colores_partidos = {'PSOE': 'red',
                         'PP': 'cyan',
                         'VOX': 'green',
-                        'SUMAR': 'violet'}
+                        'SUMAR': 'violet',
+                        'Votantes': 'grey'}
 
     plt.figure(figsize=(8, 6))
     plt.pie(votos_por_partido, labels=etiquetas, autopct='%1.1f%%', startangle=140,

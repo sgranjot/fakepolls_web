@@ -39,6 +39,9 @@ def upload_csv(request):
 
             votos_por_partido = df_filtrado.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()
 
+            df_votantes= df[df['PARTIDO'].isin(['Votantes'])]
+            resto_votantes= df_votantes.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()
+
             for index, fila in votos_por_partido.iterrows():
                 obj = Votacion.objects.create(
                     anio = fila['AÑO'],
