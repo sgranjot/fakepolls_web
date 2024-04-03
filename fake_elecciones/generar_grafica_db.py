@@ -14,9 +14,9 @@ def generar_grafica(votaciones_list):
                         'PP': 'cyan',
                         'VOX': 'green',
                         'SUMAR': 'violet',
-                        'Votantes': 'grey'}
+                        'Resto de partidos': 'grey'}
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(8, 7))
     plt.pie(votos_por_partido, labels=etiquetas, autopct='%1.1f%%', startangle=140,
             colors = [colores_partidos[partido] for partido in votos_por_partido.index])
     plt.title('Distribución de Votos por Partido en las Elecciones de {}'.format(df.iloc[0]['anio']))

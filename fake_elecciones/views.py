@@ -34,13 +34,15 @@ def upload_csv(request):
             #votos_por_partido = df.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()          ESTO ES PARA HACERLO CON TODOS LOS PARTIDOS, MEJOR CON LOS CUATRO PRINCIPALES
 
             partidos = ['PSOE', 'PP', 'VOX', 'SUMAR']
-
             df_filtrado = df[df['PARTIDO'].isin(partidos)]
-
+            votos_principales_partidos = df_filtrado['NUM_VOTOS'].sum()
             votos_por_partido = df_filtrado.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()
 
             df_votantes= df[df['PARTIDO'].isin(['Votantes'])]
+            total_votantes = df_votantes['NUM_VOTOS'].sum()
             resto_votantes= df_votantes.groupby(['AÑO', 'PARTIDO'])['NUM_VOTOS'].sum().reset_index()
+
+            votos_resto_partidos = total_votantes - votos_principales_partidos
 
             for index, fila in votos_por_partido.iterrows():
                 obj = Votacion.objects.create(
@@ -49,6 +51,11 @@ def upload_csv(request):
                     votos = fila['NUM_VOTOS']
                 )
                 obj.save()
+            Votacion.objects.create(
+                anio=resto_votantes.iloc[0]['AÑO'],  # Selecciona el año de uno de los registros
+                partido='Resto de partidos',
+                votos=votos_resto_partidos
+            )
             return render(request, 'fake_elecciones/importacion_exitosa.html')
     else:
         form = CSVForm()
